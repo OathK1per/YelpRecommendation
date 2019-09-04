@@ -24,9 +24,9 @@ public class RecommendItem extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        double lat = Double.parseDouble(request.getParameter("lat"));
-        double lon = Double.parseDouble(request.getParameter("lon"));
-        String userId = request.getParameter("user_id");
+        double lat = Double.parseDouble(req.getParameter("lat"));
+        double lon = Double.parseDouble(req.getParameter("lon"));
+        String userId = req.getParameter("user_id");
 
         Recommendation recommendation = new Recommendation();
         List<Item> items = recommendation.recommendItems(userId, lat, lon);
@@ -36,7 +36,7 @@ public class RecommendItem extends HttpServlet {
             for (Item item : items) {
                 array.put(item.toJSONObject());
             }
-            RpcHelper.writeJsonArray(response, array);
+            RpcHelper.writeJsonArray(resp, array);
         } catch (Exception e) {
             e.printStackTrace();
         }

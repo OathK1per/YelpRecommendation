@@ -1,6 +1,8 @@
 package com.zyp.yelp.servlet;
 
 import com.zyp.yelp.bean.Item;
+import com.zyp.yelp.dao.ItemHistoryRepository;
+import com.zyp.yelp.dao.SearchItemRepository;
 import com.zyp.yelp.utils.MysqlUtil;
 import com.zyp.yelp.utils.RpcHelper;
 import org.json.JSONArray;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Set;
 
@@ -29,11 +32,12 @@ public class SearchItem extends HttpServlet {
         double lon = Double.parseDouble(req.getParameter("lon"));
         String userId = req.getParameter("user_id");
         String term = req.getParameter("term");
-        MysqlUtil connection = new MysqlUtil();
-        connection.getConnection();
+        Connection conn = MysqlUtil.getConnection();
+        SearchItemRepository searchItem = new SearchItemRepository(conn);
+        ItemHistoryRepository itemHistory = new ItemHistoryRepository(conn);
         try {
-            List<Item> items = connection.searchItems(lat, lon, term);
-            Set<String> favoriteItemIds = connection.getFavoriteItemIds(userId);
+            List<Item> items = searchItem.searchItems(lat, lon, term);
+            Set<String> favoriteItemIds = itemHistory.getFavoriteItemIds(userId);
 
             JSONArray array = new JSONArray();
             for (Item item : items) {
@@ -46,7 +50,7 @@ public class SearchItem extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            connection.close();
+            MysqlUtil.close(conn);
         }
 
     }
