@@ -35,7 +35,7 @@ public class YelpInfo {
             e.printStackTrace();
         }
 
-        String query = String.format("term=%s&latitude=%s&longitude=%s&limit=%s", term, lat, lon, SEARCH_LIMIT);
+        String query = String.format("categories=%s&latitude=%s&longitude=%s&limit=%s", term, lat, lon, SEARCH_LIMIT);
         String url = HOST + ENDPOINT + "?" + query;
 
         try {

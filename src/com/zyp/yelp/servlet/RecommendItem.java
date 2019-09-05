@@ -24,9 +24,18 @@ public class RecommendItem extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        double lat = Double.parseDouble(req.getParameter("lat"));
-        double lon = Double.parseDouble(req.getParameter("lon"));
-        String userId = req.getParameter("user_id");
+        double lat = 32.88;
+        double lon = -117.23;
+        String userId = "1111";
+        if (req.getParameter("lat") != null){
+            lat = Double.parseDouble(req.getParameter("lat"));
+        }
+        if (req.getParameter("lon") != null) {
+            lon = Double.parseDouble(req.getParameter("lon"));
+        }
+        if (req.getParameter("user_id") != null) {
+            userId = req.getParameter("user_id");
+        }
 
         Recommendation recommendation = new Recommendation();
         List<Item> items = recommendation.recommendItems(userId, lat, lon);

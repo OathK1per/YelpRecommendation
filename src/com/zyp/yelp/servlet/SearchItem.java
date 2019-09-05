@@ -28,8 +28,14 @@ public class SearchItem extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        double lat = Double.parseDouble(req.getParameter("lat"));
-        double lon = Double.parseDouble(req.getParameter("lon"));
+        double lat = 32.88;
+        double lon = -117.23;
+        if (req.getParameter("lat") != null){
+            lat = Double.parseDouble(req.getParameter("lat"));
+        }
+        if (req.getParameter("lon") != null) {
+            lon = Double.parseDouble(req.getParameter("lon"));
+        }
         String userId = req.getParameter("user_id");
         String term = req.getParameter("term");
         Connection conn = MysqlUtil.getConnection();
@@ -46,7 +52,6 @@ public class SearchItem extends HttpServlet {
                 array.put(obj);
             }
             RpcHelper.writeJsonArray(resp, array);
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

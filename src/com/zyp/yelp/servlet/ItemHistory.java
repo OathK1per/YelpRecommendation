@@ -61,7 +61,7 @@ public class ItemHistory extends HttpServlet {
                 obj.put("favorite", true);
                 array.put(obj);
             }
-            RpcHelper.writeJsonArray(resp, array);;
+            RpcHelper.writeJsonArray(resp, array);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
